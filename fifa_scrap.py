@@ -27,23 +27,29 @@ url_match = 'https://www.roadtrips.com/world-cup/2022-world-cup-packages/schedul
 
 #Send page and headers
 page = requests.get(url,headers=headers)
+page_with_display_none = requests.get(url,headers=headers)
 page_team_1 = requests.get(url_match,headers=headers)
 page_team_2 = requests.get(url_match,headers=headers)
 
 
 #Parse html
 soup = BeautifulSoup(page.content, 'html.parser')
+soup_find_display_none = BeautifulSoup(page_with_display_none.content, 'html.parser')
 soup_matche_team_1 = BeautifulSoup(page_team_1.content, 'html.parser')
 soup_matche_team_2 = BeautifulSoup(page_team_2.content, 'html.parser')
 
 #Set the class that contains all the match information and its parent tag
 all_data = soup.find_all('div', class_='performance_container') 
+all_data_display_none = soup_find_display_none.find_all('ul', class_='performances_sub_group_container') 
 data_team1_from_page = soup_matche_team_1.find_all('td', class_='column-2')
 data_team2_from_page = soup_matche_team_2.find_all('td', class_='column-4')
  
 count=0
 data_into_alist  = list()
+data_display_none_into_alist = list()
 data_list = []
+data_list_none = []
+data_list_display_none = []
 team1_data_list = []
 team2_data_list = []
 list_index = []
@@ -53,6 +59,12 @@ final_list= []
 for i in data_team1_from_page:
     team1_data_list.append(i.text)
 
+
+#For to add display none to alist
+for i in all_data_display_none:
+    data_list_display_none.append(i.text)
+
+
 #For to add team 2 to list
 for i in data_team2_from_page:
     team2_data_list.append(i.text)
@@ -60,29 +72,52 @@ for i in data_team2_from_page:
 #For to add items to a list
 for i in all_data:
     data_into_alist.append(i.text)
-   
+
+
+#print(data_list_display_none)   
+
 #Remove all garbage
 special_char = '@_!#$%^&*()<>?/\|}{~:;.[]\n\r\t'
+#General
 out_list = [''.join(filter(lambda i: i not in special_char, string)) for string in data_into_alist]
+#Display none
+out_list_none = [''.join(filter(lambda i: i not in special_char, string)) for string in data_into_alist]
+
+#general
 string_clean = ''.join(map(str, out_list))
 new_list_clean = string_clean.split()
 data_list = ','.join(map(str, new_list_clean))
 
+
+#none
+string_clean_none = ''.join(map(str, out_list_none))
+new_list_clean_none = string_clean_none.split()
+data_list_none = ','.join(map(str, new_list_clean_none))
+#print(data_list_none)
+
 #Final clean list
 lista = data_list.split(',')
+
+
+#Final clean list none
+lista_none = data_list_none.split(',')
+
+#print(lista_none)
+
+
 
 #Find a string that is repeated in all matches
 #To take it as a reference and work
 #The list starting from that element
 #And generate the index of the list to iterate
-for i in range(0,len(lista)):
-    if('Stadium' in lista[i] ):
+for i in range(0,len(lista_none)):
+    if('Stadium' in lista_none[i] ):
         list_index.append(i)
 
 #Iterating the indexes to find available tickets
 for i in range(len(list_index)):      
     for j in range(list_index[i],list_index[i]+1):
-         if lista[j+3] == 'Limited' or lista[j+3] == 'availability':
+         if lista_none[j+3] == 'Limited' or lista_none[j+3] == 'availability' or  lista_none[j+3] == 'Low' or lista_none[j+3] == 'Currently' or lista_none[j+3]== 'unavailable' or lista_none[j+3]=='This':
             state = 'Not available'
          else:
             state = 'Available'
