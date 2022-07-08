@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
-import pandas as pd
+#import pandas as pd
 import json
 from datetime import datetime, timezone
 
@@ -17,6 +17,7 @@ update_time = date.strftime(date_format)
 
 #Headers to parse url
 headers = {"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gec...: ko) Chrome/83.0.4103.97 Safari/537.36"}
+
 url = 'https://fcfs-intl.fwc22.tickets.fifa.com/secure/selection/event/date/product/101397570845/lang/en'
 
 #Url Vs
@@ -47,6 +48,7 @@ data_team2_from_page = soup_matche_team_2.find_all('td', class_='column-4')
 count=0
 data_into_alist  = list()
 data_display_none_into_alist = list()
+data_category = list()
 data_list = []
 data_list_none = []
 data_list_display_none = []
@@ -105,26 +107,50 @@ lista_none = data_list_none.split(',')
 #print(lista_none)
 
 
-
 #Find a string that is repeated in all matches
 #To take it as a reference and work
 #The list starting from that element
 #And generate the index of the list to iterate
-for i in range(0,len(lista_none)):
-    if('Stadium' in lista_none[i] ):
-        list_index.append(i)
-        count += 1
-        id_tikect = 101437163854+count  
-        url_tikect = 'https://fcfs-intl.fwc22.tickets.fifa.com/secure/selection/event/seat/performance/'+str(id_tikect)+'/lang/en'
-        #Send page and headers
-        page = requests.get(url_tikect,headers=headers)
-        #Parse html
-        soup = BeautifulSoup(page.content, 'html.parser')
+cc =[]
+for j in range(0,1):
+#    count += 1
+#    id_tikect = 101437163854+count  
+    #url_tikect = 'https://fcfs-intl.fwc22.tickets.fifa.com/secure/selection/event/seat/performance/'+str(id_tikect)+'/lang/en'
 
-        #Set the class that contains all the match information and its parent tag
-        all_data = soup.find_all('span', class_='text') 
+    url_tikect = 'https://fcfs-intl.fwc22.tickets.fifa.com/secure/selection/event/seat/performance/101437163855/lang/en'
+#Send page and headers
+    page = requests.get(url_tikect,headers=headers)
+    #Parse html
+    soup = BeautifulSoup(page.content, 'html.parser')
 
-
+    #Set the class that contains all the match information and its parent tag
+    all_data1 = soup.find_all('div', class_='category_unavailable_overlay') 
+    #all_data = soup.find_all('class', class_='color') 
+    countEl =0;
+    for k in all_data1:
+        data_category.append(k.text)
+        #Remove all garbage
+        special_char = '@_!#$%^&*()<>?/\|}{~:;.[]\n\r\t'
+        #General
+        out_list = [''.join(filter(lambda k: k not in special_char, string)) for string in data_category]
+    
+        #general
+        string_clean = ''.join(map(str, out_list))
+        new_list_clean = string_clean.split()
+        data_list_c = ','.join(map(str, new_list_clean))
+    
+        #Final clean list
+            
+        lista_c = data_list_c.split(',')
+        #lista_ca= lista_c.strip()
+        #print(lista_c)
+    
+    # if(lista_c== 'Category 1' or lista_c== 'Category 2' or lista_c== 'Category 3'):
+    sizeOfDemoList = len(lista_c)
+    print(sizeOfDemoList)
+for i in range(1,4):
+    cc.append(lista_c[i])
+print(cc)
 
 #Iterating the indexes to find available tickets
 for i in range(len(list_index)):      
@@ -144,4 +170,4 @@ json_dump = json.dumps(final_list)
 with open('fifa.json', 'w') as f:
     f.write(json_dump)
     print("The json file is created")
-print(json_dump)
+#t(json_dump)
