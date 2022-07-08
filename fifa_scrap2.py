@@ -112,12 +112,12 @@ lista_none = data_list_none.split(',')
 #The list starting from that element
 #And generate the index of the list to iterate
 cc =[]
-for j in range(0,1):
-#    count += 1
-#    id_tikect = 101437163854+count  
-    #url_tikect = 'https://fcfs-intl.fwc22.tickets.fifa.com/secure/selection/event/seat/performance/'+str(id_tikect)+'/lang/en'
+for j in range(0,64):
+    count += 1
+    id_tikect = 101437163854+count  
+    url_tikect = 'https://fcfs-intl.fwc22.tickets.fifa.com/secure/selection/event/seat/performance/'+str(id_tikect)+'/lang/en'
 
-    url_tikect = 'https://fcfs-intl.fwc22.tickets.fifa.com/secure/selection/event/seat/performance/101437163855/lang/en'
+#    url_tikect = 'https://fcfs-intl.fwc22.tickets.fifa.com/secure/selection/event/seat/performance/101437163855/lang/en'
 #Send page and headers
     page = requests.get(url_tikect,headers=headers)
     #Parse html
@@ -145,11 +145,11 @@ for j in range(0,1):
         #lista_ca= lista_c.strip()
         #print(lista_c)
     
-    # if(lista_c== 'Category 1' or lista_c== 'Category 2' or lista_c== 'Category 3'):
-    sizeOfDemoList = len(lista_c)
-    print(sizeOfDemoList)
-for i in range(1,4):
-    cc.append(lista_c[i])
+    cc.append(lista_c[0])
+    cc.append(lista_c[2])
+    cc.append(lista_c[3])
+
+print(len(cc))
 print(cc)
 
 #Iterating the indexes to find available tickets
