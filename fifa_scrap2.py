@@ -112,9 +112,10 @@ lista_none = data_list_none.split(',')
 #The list starting from that element
 #And generate the index of the list to iterate
 cc =[]
+counturl=0
 for j in range(0,64):
-    count += 1
-    id_tikect = 101437163854+count  
+    counturl += 1
+    id_tikect = 101437163854+counturl  
     url_tikect = 'https://fcfs-intl.fwc22.tickets.fifa.com/secure/selection/event/seat/performance/'+str(id_tikect)+'/lang/en'
 
 #    url_tikect = 'https://fcfs-intl.fwc22.tickets.fifa.com/secure/selection/event/seat/performance/101437163855/lang/en'
@@ -146,11 +147,11 @@ for j in range(0,64):
         #print(lista_c)
     
     cc.append(lista_c[0])
+    cc.append(lista_c[1])
     cc.append(lista_c[2])
-    cc.append(lista_c[3])
 
 print(len(cc))
-print(cc)
+#print(cc)
 
 #Iterating the indexes to find available tickets
 for i in range(len(list_index)):      
@@ -163,11 +164,11 @@ for i in range(len(list_index)):
          id_tikect = 101437163854+count   
          matchesV = {'Match': 'M'+str(count) ,'HomeTeam': team1_data_list[i] ,'AwayTeam': team2_data_list[i] , 'Status': state, 'Buy': 'https://fcfs-intl.fwc22.tickets.fifa.com/secure/selection/event/seat/performance/'+str(id_tikect)+'/lang/en', 'UpdateAt': update_time}
          final_list.append(matchesV)
-
+        # del cc[0:2]   
 #Conver into json
 
 json_dump = json.dumps(final_list)
 with open('fifa.json', 'w') as f:
     f.write(json_dump)
     print("The json file is created")
-#t(json_dump)
+print(json_dump)
