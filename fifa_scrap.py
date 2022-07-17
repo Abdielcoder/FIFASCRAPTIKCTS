@@ -147,8 +147,8 @@ for j in range(0,64):
     cc.append(lista_c[1])
     cc.append(lista_c[2])
 
-print(len(cc))
-#print(cc)
+#print(len(cc))
+print(lista)
 
 
 #Find a string that is repeated in all matches
@@ -178,9 +178,11 @@ for i in range(len(list_index)):
             state = 'Not available'
         else:
             state = 'Available'
-            cuenta += 1
-            id_tikect = 101437163854+cuenta
          
+        cuenta += 1
+        id_tikect = 101437163854+cuenta
+         
+
 
 
         if(i==0):
@@ -219,7 +221,7 @@ for i in range(len(list_index)):
             print(cc[2])
         else:
             cat3 = 'Available'
-        matchesV = {'Match': 'M'+match_index ,'HomeTeam': team1_data_list[i] ,'AwayTeam': team2_data_list[i] , 'Status': state_des, 'StateDesc': lista_none_parse[i], 'Category1': cat1, 'Category2': cat2, 'Category3': cat3, 'Buy': 'https://fcfs-intl.fwc22.tickets.fifa.com/secure/selection/event/seat/performance/'+str(id_tikect)+'/lang/en', 'UpdateAt': update_time}
+        matchesV = {'Match': 'M'+str(cuenta) ,'HomeTeam': team1_data_list[i] ,'AwayTeam': team2_data_list[i] , 'Status': state, 'StateDesc': state_des, 'Category1': cat1, 'Category2': cat2, 'Category3': cat3, 'Buy': 'https://fcfs-intl.fwc22.tickets.fifa.com/secure/selection/event/seat/performance/'+str(id_tikect)+'/lang/en', 'UpdateAt': update_time}
         final_list.append(matchesV)
         del cc[0:2]   
 #Conver into json
