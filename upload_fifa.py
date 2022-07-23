@@ -101,10 +101,11 @@ class UploadJsonFileToFirestore:
                  END FOR JUST FOR DEMO REASONS
                 '''
              
-                if self.method == 'set':
-                    self.set(item)
-                else:
-                    self.add(item)
+               # if self.method == 'set':
+               #     self.set(item)
+                #else:
+                self.set(item)
+               # self.add(item)
                 # Successfully got to end of data;
                 # print success message
                 if idx == len(self.json_data)-1:
@@ -116,14 +117,15 @@ class UploadJsonFileToFirestore:
     # Collection Add method
     # Adds all data under a collection
     # With firebase firestore auto generated IDS
-    def add(self, item):
-        return db.collection(self.collectionname).add(item)
+    
+    #def add(self, item):
+     #   return db.collection('Tikects').add(item)
     
     # Collection document set method
     # Adds all data under a collection
     # With custom document IDS 
     def set(self, item):
-        return db.collection(self.collectionname).document(str(item['Match'])).set(item)
+        return db.collection('Tikects').document(str(item['Match'])).set(item)
 
 uploadjson = UploadJsonFileToFirestore()
 uploadjson.upload()      
